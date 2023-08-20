@@ -10,8 +10,7 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.facturaDecorator.FacturaDescuentosDecorator;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.facturaDecorator.FacturaImpuestosDecorator;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.DocumentDAO;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductRepository;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserDAO;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.util.ProductUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,7 +25,7 @@ public class DocumentService {
     @Autowired
     private DocumentDAO documentRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserDAO userDAO;
     @Autowired
     private ProductService productService;
     @Autowired
@@ -123,7 +122,7 @@ public class DocumentService {
     }
 
     public List<Document> getDocumentsByUserAndState(int userId, State state){
-        User user = userRepository.getUser(userId).get();
+        User user = userDAO.getUser(userId).get();
 
         return documentRepository.getDocumentsByIdUserAndState(user, state);
     }

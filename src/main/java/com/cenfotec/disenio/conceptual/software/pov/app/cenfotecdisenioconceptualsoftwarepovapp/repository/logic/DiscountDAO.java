@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DiscountRepository {
+public class DiscountDAO {
     @Autowired
     private DiscountCrudRepository discountCrudRepository;
     public List<Discount> getAll(){

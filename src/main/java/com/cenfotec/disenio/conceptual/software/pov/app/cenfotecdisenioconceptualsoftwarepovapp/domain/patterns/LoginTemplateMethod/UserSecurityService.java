@@ -2,7 +2,7 @@ package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptu
 
 
 
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSecurityService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserDAO userDAO;
 
     @Autowired
-    public UserSecurityService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserSecurityService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.User userEntity = this.userRepository.findByUsername(username);
+        com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.User userEntity = this.userDAO.findByUsername(username);
 
         if (userEntity == null) {
             throw new UsernameNotFoundException("User: "+username+" not found");

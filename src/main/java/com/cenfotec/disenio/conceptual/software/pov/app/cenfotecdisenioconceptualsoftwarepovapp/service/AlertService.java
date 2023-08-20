@@ -4,30 +4,30 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.State;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.AlertRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.AlertDAO;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.DocumentDAO;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AlertService {
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productDAO;
     @Autowired
     private DocumentDAO documentRepository;
     @Autowired
-    private AlertRepository alertRepository;
+    private AlertDAO alertDAO;
     @Autowired
     ProductService productService;
 
 
     public Alert createAlert(Alert alert){
-        return alertRepository.saveAlert(alert);
+        return alertDAO.saveAlert(alert);
     }
 
     public int getLimitAmount() {
-        return alertRepository.getLimitAmount();
+        return alertDAO.getLimitAmount();
     }
 
     public void alertNeeded(Document document){

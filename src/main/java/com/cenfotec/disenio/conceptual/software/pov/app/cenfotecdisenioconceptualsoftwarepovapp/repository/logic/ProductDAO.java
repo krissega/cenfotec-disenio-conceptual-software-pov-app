@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductRepository {
+public class ProductDAO {
     @Autowired
     private ProductCrudRepository productCrudRepository;
 

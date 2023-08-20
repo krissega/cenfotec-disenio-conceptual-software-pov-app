@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TaxRepository {
+public class TaxDAO {
     @Autowired
     private TaxCrudRepository taxCrudRepository;
     public List<Tax> getAll(){

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class AlertRepository {
+public class AlertDAO {
     @Autowired
     private ProductCrudRepository productCrudRepository;
     @Autowired
