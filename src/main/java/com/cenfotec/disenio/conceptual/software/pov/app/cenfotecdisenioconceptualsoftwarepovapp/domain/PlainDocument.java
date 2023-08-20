@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 
 public class PlainDocument {
-    private Integer id;
+    private String  id;
     private State state;
     private Boolean  approved;
     private DocumentType documentType;

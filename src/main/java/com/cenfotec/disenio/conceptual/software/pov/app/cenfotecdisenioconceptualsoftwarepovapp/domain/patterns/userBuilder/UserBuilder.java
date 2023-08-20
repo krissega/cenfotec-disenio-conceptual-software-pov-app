@@ -4,7 +4,7 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 import java.util.List;
 
 public class UserBuilder {
-    private int id;
+    private String  id;
 
     private UserType userType;
     private String username;
@@ -19,7 +19,7 @@ public class UserBuilder {
     private int authenticated;
     private List<Document> documents;
 
-    public UserBuilder setId(int id) {
+    public UserBuilder setId(String  id) {
         this.id = id;
         return this;
     }

@@ -8,10 +8,8 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,11 +34,11 @@ public class DocumentDAO {
     }
 
     public List<Document> getAll(){return documentCrudRepository.findAll();}
-    public List<Document> getDocumentsByIdUser(int idUser){return findDocumentsByUser(idUser);}
+    public List<Document> getDocumentsByIdUser(String  idUser){return findDocumentsByUser(idUser);}
     public Document saveUser(Document document){return documentCrudRepository.save(document);}
-    public void deleteDocument(int idDocument){documentCrudRepository.deleteById(idDocument);}
+    public void deleteDocument(String idDocument){documentCrudRepository.deleteById(idDocument);}
 
-    public Document getDocument(int idDocument) {
+    public Document getDocument(String  idDocument) {
         return documentCrudRepository.findById(idDocument);
     }
 
@@ -50,8 +48,8 @@ public class DocumentDAO {
 
         List<Product> products = document.getProducts();
         for (Product product : products) {
-            Optional<Product> id =  productCrudRepository.findById(product.getId());
-            Product productToInsert = id.orElse(new Product());
+            Product id =  productCrudRepository.findById(product.getId());
+            Product productToInsert = id;
             updateProduct(productToInsert,productCrudRepository, ProductUtils.getProductQty(products,product));
         }
 
@@ -69,14 +67,14 @@ public class DocumentDAO {
     }
 
     public List<Document> getAllInvoices() {
-        return documentCrudRepository.findByIdUserGreaterThan(0);
+        return documentCrudRepository.findAll();
     }
 
     public List<Document> getDocumentsByStateAndValidBefore(State state, LocalDateTime now){
         return findInvalidDocuments(state, now);
     }
 
-    public Optional<Document> findById(Integer documentId) {
+    public Document findById(String  documentId) {
         return documentCrudRepository.findById(documentId);
     }
 
@@ -89,7 +87,7 @@ public class DocumentDAO {
     public List<Document> getDocumentsByIdUserAndState(User user, State pstate) {
         List<Document> allBeforeFilter =  documentCrudRepository.findAll();
         List<Document> invalidDocument = allBeforeFilter.stream()
-                .filter(doc ->  doc.getIdUser().getId()==user.getId() && doc.getState().equals(pstate))
+                .filter(doc ->  doc.getIdUser().getId().equals(user.getId()) && doc.getState().equals(pstate))
                 .collect(Collectors.toList());
         return invalidDocument;
     }
@@ -110,10 +108,10 @@ public class DocumentDAO {
        return invalidDocument;
 
     }
-    public List<Document>findDocumentsByUser(int userId){
+    public List<Document>findDocumentsByUser(String  userId){
         List<Document> allBeforeFilter =  documentCrudRepository.findAll();
         List<Document> invalidDocument = allBeforeFilter.stream()
-                .filter(doc ->  doc.getIdUser().getId()==userId)
+                .filter(doc ->  doc.getIdUser().getId().equals(userId))
                 .collect(Collectors.toList());
         return invalidDocument;
 

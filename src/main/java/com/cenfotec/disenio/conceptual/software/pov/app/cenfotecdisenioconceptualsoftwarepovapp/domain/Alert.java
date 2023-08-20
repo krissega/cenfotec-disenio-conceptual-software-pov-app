@@ -14,10 +14,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Alert {
 
     @Id
-    private Integer id;
+    private String id;
     private String message;
     private Boolean  readed;
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 

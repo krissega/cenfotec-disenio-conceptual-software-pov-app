@@ -22,7 +22,7 @@ public class ProductService {
     public List<Product> getAll(){
         return productDAO.getAll();
     }
-    public Optional<Product> getProduct(int idProduct){
+    public Product getProduct(String  idProduct){
         return productDAO.getProduct(idProduct);
     }
 
@@ -30,9 +30,9 @@ public class ProductService {
         return productDAO.saveProduct(product);
     }
 
-    public boolean deleteProduct(int idProduct){
+    public boolean deleteProduct(String  idProduct){
         boolean deleted = false;
-        if(getProduct(idProduct).isPresent()){
+        if(getProduct(idProduct)!=null){
             productDAO.deleteProduct(idProduct);
             return true;
         }else{
@@ -41,7 +41,7 @@ public class ProductService {
     }
 
 
-    public Document getProductsByDocument(int documentId){
+    public Document getProductsByDocument(String documentId){
         System.out.println("Vamos por aqui");
         return productByDocumentRepository.getDocument(documentId);
     }

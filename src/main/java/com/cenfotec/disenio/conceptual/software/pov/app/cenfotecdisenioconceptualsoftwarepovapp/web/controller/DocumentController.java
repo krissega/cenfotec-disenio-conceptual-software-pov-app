@@ -52,7 +52,7 @@ public class DocumentController {
         int quantity=0;
         for (Product product : document.getProducts()) {
             System.out.println("product: " + product.getName());
-            Product productInStock = productService.getProduct(product.getId()).orElse(new Product());
+            Product productInStock = productService.getProduct(product.getId());
             quantity = ProductUtils.getProductQty(document.getProducts(), product);
             if (quantity <= 0 || product == null) {
                 throw new RuntimeException("Product with the following ID " + product.getId() + " does not exists");
@@ -78,12 +78,12 @@ public class DocumentController {
     }//Ticket = tiquete de caja
 
     @GetMapping("/list/{idUser}")
-    public List<Document> getDocumentsByUserId(@PathVariable("idUser") int idUser) {
+    public List<Document> getDocumentsByUserId(@PathVariable("idUser") String  idUser) {
         return documentService.getAllByUser(idUser);
     }
 
     @GetMapping("/show/{idDocument}")
-    public Document getDocumentsByDocumentId(@PathVariable("idDocument") int idDocument) {
+    public Document getDocumentsByDocumentId(@PathVariable("idDocument") String idDocument) {
         return documentService.getDocumentById(idDocument);
     }
 
@@ -110,12 +110,12 @@ public class DocumentController {
     }
 
     @PutMapping(value = "/{id}/adminapprove", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Document> adminPaymentApproval(@PathVariable("id") Integer documentId) {
+    public ResponseEntity<Document> adminPaymentApproval(@PathVariable("id") String  documentId) {
         return new ResponseEntity<>(documentService.adminApprovePayment(documentId), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}/pay")
-    public ResponseEntity<String> updateDocumentStateToPaid(@PathVariable("id") Integer documentId) {
+    public ResponseEntity<String> updateDocumentStateToPaid(@PathVariable("id") String  documentId) {
         Document document = documentService.getDocumentById(documentId);
         if (document == null) {
             return ResponseEntity.notFound().build();
@@ -128,7 +128,7 @@ public class DocumentController {
     }
 
     @PutMapping(value = "/{id}/cancel")
-    public ResponseEntity<String> updateDocumentStateToCancel(@PathVariable("id") Integer documentId, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<String> updateDocumentStateToCancel(@PathVariable("id") String documentId, @RequestBody Map<String, String> requestBody) {
         System.out.println(requestBody.get("comment"));
 
         Document document = documentService.getDocumentById(documentId);

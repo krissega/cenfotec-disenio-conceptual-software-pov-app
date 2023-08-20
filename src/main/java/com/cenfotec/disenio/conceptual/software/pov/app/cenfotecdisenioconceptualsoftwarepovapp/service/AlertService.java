@@ -32,7 +32,7 @@ public class AlertService {
 
     public void alertNeeded(Document document){
         for (Product product : document.getProducts()) {
-            Product productInStock = productService.getProduct(product.getId()).orElse(new Product());
+            Product productInStock = productService.getProduct(product.getId());
             if(productInStock.getQtyStock() <= 20){
                 Alert alert = new Alert();
                 alert.setReaded(false);

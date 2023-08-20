@@ -3,7 +3,7 @@ package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptu
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.userFabric.AbstractUser;
 public class RegularHumanUser extends AbstractUser {
 
-    private Integer id;
+    private String id;
     private UserType userType;
     private String username;
     private String password;
@@ -15,7 +15,7 @@ public class RegularHumanUser extends AbstractUser {
     private int authenticated;
 
     public RegularHumanUser(){}
-    public RegularHumanUser(Integer id, UserType userType, String username, String password, String cedula, String name, String lastname, String address, String email, int authenticated) {
+    public RegularHumanUser(String  id, UserType userType, String username, String password, String cedula, String name, String lastname, String address, String email, int authenticated) {
         this.id = id;
         this.userType = userType;
         this.username = username;
@@ -29,12 +29,12 @@ public class RegularHumanUser extends AbstractUser {
     }
 
     @Override
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

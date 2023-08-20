@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @GetMapping("/document/{idDocument}")
-    public ResponseEntity <Document> getProductsByDocument(@PathVariable("idDocument") int idDocument){
+    public ResponseEntity <Document> getProductsByDocument(@PathVariable("idDocument") String idDocument){
         return new ResponseEntity<>(productService.getProductsByDocument(idDocument), HttpStatus.CREATED);
     }
 }
