@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepository {
+public class UserDAO {
     @Autowired
     private UserCrudRepository userCrudRepository;
 

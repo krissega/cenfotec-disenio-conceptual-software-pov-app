@@ -3,7 +3,7 @@ package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptu
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.User;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.userFabric.AbstractUser;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.userFabric.UserFactory;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +13,16 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private UserDAO userDAO;
 
     public List<User> getAll(){
-        return userRepository.getAll();
+        return userDAO.getAll();
     }
     public Optional<User> getProduct(int idProduct){
-        return userRepository.getUser(idProduct);
+        return userDAO.getUser(idProduct);
     }
     
-    public User save (User user){ return userRepository.saveUser(user);}
+    public User save (User user){ return userDAO.saveUser(user);}
 
     public User createUser(User pUser){
         User savedUser = new User();
@@ -111,7 +111,7 @@ public class UserService {
 //    }
 
     public AbstractUser getUser(int idUser) {
-        Optional<User> loadedUser = userRepository.getUser(idUser);
+        Optional<User> loadedUser = userDAO.getUser(idUser);
         AbstractUser iUser = UserFactory.createUser(loadedUser.get().getUserType());
         iUser.setId(loadedUser.get().getId());
         iUser.setUserType(loadedUser.get().getUserType());
@@ -132,6 +132,6 @@ public class UserService {
     }
 
     public User getUserByUsername(String username){
-        return userRepository.findByUsername(username);
+        return userDAO.findByUsername(username);
     }
 }

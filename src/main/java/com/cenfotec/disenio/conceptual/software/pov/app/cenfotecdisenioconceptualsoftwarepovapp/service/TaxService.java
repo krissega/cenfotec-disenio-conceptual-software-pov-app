@@ -1,7 +1,7 @@
 package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service;
 
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Tax;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.TaxRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.TaxDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import java.util.Optional;
 @Service
 public class TaxService {
     @Autowired
-    private TaxRepository taxRepository;
+    private TaxDAO taxDAO;
 
     public List<Tax> getAll() {
-        return taxRepository.getAll();
+        return taxDAO.getAll();
     }
 
     public Optional<Tax> getTax(int taxId) {
-        return taxRepository.getTaxById(taxId);
+        return taxDAO.getTaxById(taxId);
     }
 }
 

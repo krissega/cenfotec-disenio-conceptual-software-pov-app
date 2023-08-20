@@ -3,7 +3,7 @@ package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptu
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.DocumentDAO;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductRepository;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,27 +13,27 @@ import java.util.Optional;
 @Service
 public class ProductService {
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productDAO;
 
     @Autowired
     private DocumentDAO productByDocumentRepository;
 
 
     public List<Product> getAll(){
-        return productRepository.getAll();
+        return productDAO.getAll();
     }
     public Optional<Product> getProduct(int idProduct){
-        return productRepository.getProduct(idProduct);
+        return productDAO.getProduct(idProduct);
     }
 
     public Product save(Product product){
-        return productRepository.saveProduct(product);
+        return productDAO.saveProduct(product);
     }
 
     public boolean deleteProduct(int idProduct){
         boolean deleted = false;
         if(getProduct(idProduct).isPresent()){
-            productRepository.deleteProduct(idProduct);
+            productDAO.deleteProduct(idProduct);
             return true;
         }else{
             return false;
@@ -47,6 +47,6 @@ public class ProductService {
     }
 
     public Optional<Product> showProduct(int idProduct) {
-        return productRepository.findById(idProduct);
+        return productDAO.findById(idProduct);
     }
 }
