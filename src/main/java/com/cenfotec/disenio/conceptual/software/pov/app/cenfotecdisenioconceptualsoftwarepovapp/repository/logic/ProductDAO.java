@@ -19,7 +19,7 @@ public class ProductDAO {
         return productCrudRepository.findByQtyStockLessThan(qty);
     }
 
-    public Optional<Product> getProduct(int idProduct){
+    public Product getProduct(String idProduct){
         return productCrudRepository.findById(idProduct);
     }
 
@@ -27,7 +27,7 @@ public class ProductDAO {
         return productCrudRepository.save(product);
     }
 
-    public void deleteProduct(int idProduct){
+    public void deleteProduct(String idProduct){
         productCrudRepository.deleteById(idProduct);
     }
 

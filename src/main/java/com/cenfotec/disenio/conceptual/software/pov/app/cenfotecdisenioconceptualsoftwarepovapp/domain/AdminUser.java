@@ -5,7 +5,7 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 
 public class AdminUser extends AbstractUser {
 
-    private Integer id;
+    private String  id;
     private UserType userType;
     private String username;
     private String password;
@@ -20,7 +20,7 @@ public class AdminUser extends AbstractUser {
 
     }
 
-    public AdminUser(Integer id, UserType userType, String username, String password, String cedula, String name, String lastname, String address, String email, int authenticated) {
+    public AdminUser(String id, UserType userType, String username, String password, String cedula, String name, String lastname, String address, String email, int authenticated) {
         this.id = id;
         this.userType = userType;
         this.username = username;
@@ -34,12 +34,12 @@ public class AdminUser extends AbstractUser {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Override
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 

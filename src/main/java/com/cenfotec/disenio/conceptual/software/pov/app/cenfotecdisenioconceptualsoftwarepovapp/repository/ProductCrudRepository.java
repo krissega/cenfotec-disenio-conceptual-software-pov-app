@@ -11,6 +11,8 @@ public interface ProductCrudRepository extends MongoRepository<Product, Integer>
 
     Optional<List<Product>> findByQtyStockLessThan(int qtyStock);
 //    Optional<List<Product>> findByDocuments(Integer documentID);
+    Product findById(String id);
+    void deleteById(String id);
 
 
 }

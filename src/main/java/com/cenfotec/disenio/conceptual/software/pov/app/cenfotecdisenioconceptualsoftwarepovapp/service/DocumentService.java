@@ -37,7 +37,7 @@ public class DocumentService {
     public List<Document> getAll(){
         return documentRepository.getAll();
     }
-    public Document getDocument(int idDocument){
+    public Document getDocument(String idDocument){
         return documentRepository.getDocument(idDocument);
     }
 
@@ -63,7 +63,7 @@ public class DocumentService {
         double total = 0;
         int quantity=0;
         for (Product product : document.getProducts()) {
-            Product productInStock = productService.getProduct(product.getId()).orElse(new Product());
+            Product productInStock = productService.getProduct(product.getId());
             quantity = ProductUtils.getProductQty(document.getProducts(), product);
             total += productInStock.getPrice() * quantity;
         }
@@ -100,9 +100,9 @@ public class DocumentService {
             System.out.println("Se actualizó el estado de la factura: " + document.getId());
         }
     }
-    public boolean deleteDocument(int idDocument){
+    public boolean deleteDocument(String idDocument){
         boolean deleted = false;
-        if(getDocument(idDocument).getId()==idDocument){
+        if(getDocument(idDocument).getId().equals(idDocument)){
             documentRepository.deleteDocument(idDocument);
             return true;
         }else{
@@ -115,9 +115,9 @@ public class DocumentService {
     }
 
     public List<Document> getAllTickets() {
-        return documentRepository.getDocumentsByIdUser(1);//user 1 = tickets
+        return documentRepository.getAllInvoices();//user 1 = tickets
     }
-    public List<Document> getAllByUser(int idUser){
+    public List<Document> getAllByUser(String idUser){
         return documentRepository.getDocumentsByIdUser(idUser);
     }
 
@@ -129,7 +129,7 @@ public class DocumentService {
 
 
 
-    public Document adminApprovePayment(Integer documentId) {
+    public Document adminApprovePayment(String documentId) {
         Document document = documentRepository.getDocument(documentId);
         document.setApproved(true);
         documentRepository.updateApprovePaymentAdmin(document);
@@ -145,8 +145,8 @@ public class DocumentService {
         return updatedDocument;
     }
 
-    public Document getDocumentById(Integer id) {
-        return documentRepository.findById(id).orElse(null);
+    public Document getDocumentById(String id) {
+        return documentRepository.findById(id);
     }
 
     public void saveDocument(Document document) {

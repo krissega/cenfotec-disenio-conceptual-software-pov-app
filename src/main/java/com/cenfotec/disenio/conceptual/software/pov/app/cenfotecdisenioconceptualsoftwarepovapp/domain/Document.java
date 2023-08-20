@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Document {
-    private Integer id;
+    private String id;
     private State state;
     private Boolean  approved;
     private DocumentType documentType;

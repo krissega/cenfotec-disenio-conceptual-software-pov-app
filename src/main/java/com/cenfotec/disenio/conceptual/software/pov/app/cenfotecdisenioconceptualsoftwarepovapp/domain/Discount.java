@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Discount {
 
 
-    private Integer id;
+    private String  id;
     private String description;
     private double percentage;
     private List<Document> documents;

@@ -5,7 +5,7 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 
 public abstract class AbstractUser {
 
-    private Integer id;
+    private String id;
     private UserType userType;
     private String username;
     private String password;
@@ -18,11 +18,11 @@ public abstract class AbstractUser {
     private String lastname;
     private String cedula;
 
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String  id) {
         this.id = id;
     }
 
@@ -84,9 +84,6 @@ public abstract class AbstractUser {
         return name;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getRazonSocial() {
         return razonSocial;

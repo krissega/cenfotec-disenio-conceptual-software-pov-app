@@ -4,7 +4,7 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 
 public class RegularJuridicUser extends AbstractUser {
 
-    private Integer id;
+    private String id;
     private UserType userType;
     private String username;
     private String password;
@@ -18,7 +18,7 @@ public class RegularJuridicUser extends AbstractUser {
     public RegularJuridicUser() {
     }
 
-    public RegularJuridicUser(Integer id, UserType userType, String username, String password, String lastname, String address, String cedulaJuridica, String razonSocial, String email, int authenticated) {
+    public RegularJuridicUser(String id, UserType userType, String username, String password, String lastname, String address, String cedulaJuridica, String razonSocial, String email, int authenticated) {
         this.id = id;
         this.userType = userType;
         this.username = username;
@@ -32,12 +32,12 @@ public class RegularJuridicUser extends AbstractUser {
     }
 
     @Override
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
