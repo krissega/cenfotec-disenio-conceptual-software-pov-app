@@ -4,7 +4,7 @@ export class Discount {
     percentage: number = 0;
 
     constructor(
-        id?: String ,
+        id?: string ,
         description?: string,
         percentage?: number
     ){

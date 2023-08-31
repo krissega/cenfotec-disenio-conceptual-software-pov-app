@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Item {
     Product product;
-    int qtyToSale;
+    int qty;
 }

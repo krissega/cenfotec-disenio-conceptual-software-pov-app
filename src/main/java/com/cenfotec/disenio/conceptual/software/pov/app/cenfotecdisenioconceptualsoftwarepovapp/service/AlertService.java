@@ -30,7 +30,7 @@ public class AlertService {
     }
 
     public void alertNeeded(Invoice invoice){
-        for (Item product : invoice.getProducts()) {
+        for (Item product : invoice.getItems()) {
             Product productInStock = productService.getProduct(product.getProduct().getId());
             if(productInStock.getQtyStock() <= 20){
                 Alert alert = new Alert();

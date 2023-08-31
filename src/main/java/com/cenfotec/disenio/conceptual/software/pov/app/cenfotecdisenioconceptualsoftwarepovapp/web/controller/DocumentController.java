@@ -47,19 +47,19 @@ public class DocumentController {
         return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create", consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invoice> createDocument(@RequestBody Invoice invoice) {
         int quantity=0;
-        for (Item product : invoice.getProducts()) {
-            System.out.println("product: " + product.getProduct().getName());
-            Product productInStock = productService.getProduct(product.getProduct().getId());
-            quantity = product.getQtyToSale();
-            if (quantity <= 0 || product == null) {
-                throw new RuntimeException("Product with the following ID " + product.getProduct().getId() + " does not exists");
+        for (Item item  : invoice.getItems()) {
+            System.out.println("product: " + item.getProduct().getName());
+            Product productInStock = productService.getProduct(item.getProduct().getId());
+            quantity = item.getQty();
+            if (quantity <= 0 || item == null) {
+                throw new RuntimeException("Product with the following ID " + item.getProduct().getId() + " does not exists");
             }
 
             if (productInStock.getQtyStock() < quantity) {
-                throw new RuntimeException("The following product: " + product.getProduct().getName() + " does not have enough items in the inventory");
+                throw new RuntimeException("The following product: " + item.getProduct().getName() + " does not have enough items in the inventory");
             }
         }
 

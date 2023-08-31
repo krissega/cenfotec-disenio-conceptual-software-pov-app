@@ -27,10 +27,9 @@ public class Invoice {
     private  String idDiscount;
     private  String idTax;
     private  User idUser;
-   // private User user;
     private Tax tax;
     private Discount discount;
-    private List<Item> products;
+    private List<Item> items;
     private double total;
 
 

@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit{
   selectedUserOption: string = "NA";
   comment: string = "";
   disableUserDropdown: boolean = false;
-  selectedUserForTiqueteDeCajas: number = 0;
+  selectedUserForTiqueteDeCajas =  new User();
   productsForDocument: Product[] = [];
   productsAddedForDocument: Product[] = [];
   qtyProductAddedForDocument: number = 0;
@@ -39,9 +39,9 @@ export class HomeComponent implements OnInit{
   allProductsDocumentSubTotal: number = 0;
   allProductsDocumentTotal: number = 0;
   taxes: Tax[] = [];
-  taxId: number | null = null;
+  taxId: string | null = null;
   discounts: Discount[] = [];
-  discountId: number | null = null;
+  discountId: string | null = null;
   selectedDiscount: Discount | null = null;
   selectedTax: Tax | null = null;
   selectedUserForDocument: User = new User();
@@ -251,7 +251,16 @@ export class HomeComponent implements OnInit{
     if(selectedOptionValue === "TIQUETE_DE_CAJA"){
       console.log("Tiquete de cajas seleccionado");
       this.disableUserDropdown = true;
-      this.selectedUserForTiqueteDeCajas = 1;
+      this.selectedUserForTiqueteDeCajas.id ="64f05894949ec7773168c685";
+      this.selectedUserForTiqueteDeCajas.userType="User_human";
+      this.selectedUserForTiqueteDeCajas.username="tiqueteCajas";
+      this.selectedUserForTiqueteDeCajas.password="1234";
+      this.selectedUserForTiqueteDeCajas.lastname="system";
+      this.selectedUserForTiqueteDeCajas.address="Escazu";
+      this.selectedUserForTiqueteDeCajas.email= "facturacion3@email.com";
+      this.selectedUserForTiqueteDeCajas.cedula= "801169540";
+      this.selectedUserForTiqueteDeCajas.name="system";
+
     }else {
       this.disableUserDropdown = false;
     }
@@ -316,7 +325,7 @@ export class HomeComponent implements OnInit{
       });
   }
 
-  addDiscount(discountId: number | null) {
+  addDiscount(discountId: string | null) {
     const authHeader = this.authenticationService.getAuthToken();
     const headers = new HttpHeaders({
       'Content-Type':  'application/json',
@@ -347,7 +356,7 @@ export class HomeComponent implements OnInit{
   }
 
 
-  addTax(idTax: number | null){
+  addTax(idTax: string | null){
     const authHeader = this.authenticationService.getAuthToken();
     const headers = new HttpHeaders({
       'Content-Type':  'application/json',
@@ -410,7 +419,7 @@ export class HomeComponent implements OnInit{
     this.productsAddedForDocument.forEach(productData => {
       productsString += `{
           "product":{
-              "id": ${productData.id},
+              "id": "${productData.id}",
               "name": "${productData.name}",
               "description": "${productData.description}",
               "qtyStock": "${productData.qtyStock}",
@@ -420,19 +429,33 @@ export class HomeComponent implements OnInit{
       },`;});
     productsString = productsString.substring(0, productsString.length - 1);
     console.log("Product String: "+productsString);
+    let userString="";
+    userString+=`{
+     "id":"64f05aa279c5640ab2742dea",
+      "userType": "User_human",
+      "username": "tiqueteCajas",
+      "password": "1234",
+      "cedula": "801169540",
+     "name": "system",
+     "lastname": "system",
+     "address": "Escazu",
+     "email": "facturacion3@email.com"
+    }`;
+
     const documentJson = `{
         "state": "PENDIENTE_DE_PAGO",
-        "approved": false,
+        "approved": "false",
         "documentType": "${this.selectedDocumentType}",
         "comment": "${this.comment}",
         "createdAt": "${fechas.fechaActual}",
         "valid": "${fechas.fechaCon7DiasMas}",
-        "idDiscount": ${this.selectedDiscount?.id},
-        "idTax": ${this.selectedTax?.id},
-        "idUser": ${this.selectedUserForTiqueteDeCajas},
+        "idDiscount": "${this.selectedDiscount?.id}",
+        "idTax": "${this.selectedTax?.id}",
+        "idUser": ${userString},
         "products": [${productsString}],
         "tax": ${taxString},
-        "discount": ${discountString}
+        "discount": ${discountString},
+        "total": ${ this.allProductsDocumentTotal}
     }`;
     console.log(documentJson);
 

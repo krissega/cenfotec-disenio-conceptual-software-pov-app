@@ -46,11 +46,11 @@ public class DocumentDAO {
     public Invoice saveDocument(Invoice invoice) {
         Invoice d = documentCrudRepository.save(invoice);
 
-        List<Item> products = invoice.getProducts();
+        List<Item> products = invoice.getItems();
         for (Item product : products) {
             Product id =  productCrudRepository.findById(product.getProduct().getId()).get();
             Product productToInsert = id;
-            updateProduct(productToInsert,productCrudRepository, product.getQtyToSale());
+            updateProduct(productToInsert,productCrudRepository, product.getQty());
         }
 
         return d;

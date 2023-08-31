@@ -58,9 +58,9 @@ public class DocumentService {
     public Invoice save(Invoice invoice){
         double total = 0;
         int quantity=0;
-        for (Item item : invoice.getProducts()) {
+        for (Item item : invoice.getItems()) {
             Product productInStock = productService.getProduct(item.getProduct().getId());
-            quantity = item.getQtyToSale();
+            quantity = item.getQty();
             total += productInStock.getPrice() * quantity;
         }
 
