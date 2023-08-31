@@ -18,7 +18,7 @@ public class UserService {
     public List<User> getAll(){
         return userDAO.getAll();
     }
-    public Optional<User> getProduct(int idProduct){
+    public Optional<User> getProduct(String idProduct){
         return userDAO.getUser(idProduct);
     }
     
@@ -110,7 +110,7 @@ public class UserService {
 //        }
 //    }
 
-    public AbstractUser getUser(int idUser) {
+    public AbstractUser getUser(String idUser) {
         Optional<User> loadedUser = userDAO.getUser(idUser);
         AbstractUser iUser = UserFactory.createUser(loadedUser.get().getUserType());
         iUser.setId(loadedUser.get().getId());

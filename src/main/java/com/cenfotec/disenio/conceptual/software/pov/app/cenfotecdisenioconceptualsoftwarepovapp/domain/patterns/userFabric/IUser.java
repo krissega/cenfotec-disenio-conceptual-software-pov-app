@@ -25,5 +25,5 @@ public interface IUser {
 
     void setCedula(String cedula);
 
-    void setId(int id);
+    void setId(String id);
 }

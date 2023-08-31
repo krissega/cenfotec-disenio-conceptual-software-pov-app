@@ -3,12 +3,12 @@ package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptu
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.User;;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserCrudRepository extends CrudRepository<User, Integer> {
+public interface UserCrudRepository extends CrudRepository<User, String> {
 
-    User getUserById(int idUser);
+    User getUserById(String idUser);
 
 //    @Query(value = "Select * from documents where id_user = ?", nativeQuery = true)
-//    List<Document> getDocumentsByIdUser(int idUser);
+//    List<Invoice> getDocumentsByIdUser(int idUser);
 
     User findByUsernameAndPassword(String username, String Password);
 

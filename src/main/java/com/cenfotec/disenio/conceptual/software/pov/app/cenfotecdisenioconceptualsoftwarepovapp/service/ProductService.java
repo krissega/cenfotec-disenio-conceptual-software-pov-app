@@ -1,6 +1,6 @@
 package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service;
 
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Invoice;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.DocumentDAO;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.ProductDAO;
@@ -41,12 +41,12 @@ public class ProductService {
     }
 
 
-    public Document getProductsByDocument(String documentId){
+    public Invoice getProductsByDocument(String documentId){
         System.out.println("Vamos por aqui");
         return productByDocumentRepository.getDocument(documentId);
     }
 
-    public Optional<Product> showProduct(int idProduct) {
-        return productDAO.findById(idProduct);
+    public Product showProduct(String  idProduct) {
+        return productDAO.getProduct(idProduct);
     }
 }

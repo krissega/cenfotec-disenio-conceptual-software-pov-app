@@ -17,7 +17,7 @@ public class DiscountService {
         return discountRepository.getAll();
     }
 
-    public Optional<Discount> getDiscount(int discountId) {
+    public Optional<Discount> getDiscount(String  discountId) {
         return discountRepository.getDiscountById(discountId);
     }
 }

@@ -1,7 +1,7 @@
 package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.web.controller;
 
 
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Invoice;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/show/{idProduct}")
-    public Optional<Product> showProduct(@PathVariable("idProduct") int idProduct){
+    public Product showProduct(@PathVariable("idProduct") String idProduct){
         return productService.showProduct(idProduct);
     }
 
@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @GetMapping("/document/{idDocument}")
-    public ResponseEntity <Document> getProductsByDocument(@PathVariable("idDocument") String idDocument){
+    public ResponseEntity <Invoice> getProductsByDocument(@PathVariable("idDocument") String idDocument){
         return new ResponseEntity<>(productService.getProductsByDocument(idDocument), HttpStatus.CREATED);
     }
 }

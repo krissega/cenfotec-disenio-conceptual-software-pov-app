@@ -17,7 +17,7 @@ public class TaxService {
         return taxDAO.getAll();
     }
 
-    public Optional<Tax> getTax(int taxId) {
+    public Optional<Tax> getTax(String  taxId) {
         return taxDAO.getTaxById(taxId);
     }
 }

@@ -16,7 +16,7 @@ public class TaxDAO {
         return taxCrudRepository.findAll();
     }
 
-    public Optional<Tax> getTaxById(int taxId) {
+    public Optional<Tax> getTaxById(String  taxId) {
         return taxCrudRepository.findById(taxId);
     }
 

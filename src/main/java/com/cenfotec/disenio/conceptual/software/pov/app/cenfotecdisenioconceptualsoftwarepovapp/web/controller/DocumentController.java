@@ -1,12 +1,12 @@
 package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.web.controller;
 
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Invoice;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Item;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.State;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service.AlertService;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service.DocumentService;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service.ProductService;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.util.ProductUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,116 +35,116 @@ public class DocumentController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<Document>> getAllDocuments() {
-        List<Document> documents = new ArrayList<>();
-        documents = documentService.getAll();
-        if (documents.isEmpty()) {
+    public ResponseEntity<List<Invoice>> getAllDocuments() {
+        List<Invoice> invoices = new ArrayList<>();
+        invoices = documentService.getAll();
+        if (invoices.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        for (Document document : documents) {
-            logger.info("Products of Document " + document.getId()+"\n");
+        for (Invoice invoice : invoices) {
+            logger.info("Products of Invoice " + invoice.getId()+"\n");
         }
-        return new ResponseEntity<>(documents, HttpStatus.OK);
+        return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Document> createDocument(@RequestBody Document document) {
+    @PostMapping(value = "/create", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<Invoice> createDocument(@RequestBody Invoice invoice) {
         int quantity=0;
-        for (Product product : document.getProducts()) {
-            System.out.println("product: " + product.getName());
-            Product productInStock = productService.getProduct(product.getId());
-            quantity = ProductUtils.getProductQty(document.getProducts(), product);
+        for (Item product : invoice.getProducts()) {
+            System.out.println("product: " + product.getProduct().getName());
+            Product productInStock = productService.getProduct(product.getProduct().getId());
+            quantity = product.getQtyToSale();
             if (quantity <= 0 || product == null) {
-                throw new RuntimeException("Product with the following ID " + product.getId() + " does not exists");
+                throw new RuntimeException("Product with the following ID " + product.getProduct().getId() + " does not exists");
             }
 
             if (productInStock.getQtyStock() < quantity) {
-                throw new RuntimeException("The following product: " + product.getName() + " does not have enough items in the inventory");
+                throw new RuntimeException("The following product: " + product.getProduct().getName() + " does not have enough items in the inventory");
             }
         }
 
-        return new ResponseEntity<>(documentService.save(document), HttpStatus.CREATED);
+        return new ResponseEntity<>(documentService.save(invoice), HttpStatus.CREATED);
     }
 
 
     @GetMapping("/listinvoice")
-    public List<Document> getAllInvoices() {
+    public List<Invoice> getAllInvoices() {
         return documentService.getAllInvoices();
     }//Bills = Factura
 
     @GetMapping("/listticket")
-    public List<Document> getAllTickets() {
+    public List<Invoice> getAllTickets() {
         return documentService.getAllTickets();
     }//Ticket = tiquete de caja
 
     @GetMapping("/list/{idUser}")
-    public List<Document> getDocumentsByUserId(@PathVariable("idUser") String  idUser) {
+    public List<Invoice> getDocumentsByUserId(@PathVariable("idUser") String  idUser) {
         return documentService.getAllByUser(idUser);
     }
 
     @GetMapping("/show/{idDocument}")
-    public Document getDocumentsByDocumentId(@PathVariable("idDocument") String idDocument) {
+    public Invoice getDocumentsByDocumentId(@PathVariable("idDocument") String idDocument) {
         return documentService.getDocumentById(idDocument);
     }
 
     @GetMapping("/filterbystate/{idUser}/{state}")
-    public List<Document> getDocumentsByUserAndState(@PathVariable("idUser") int idUser, @PathVariable("state") State state) {
+    public List<Invoice> getDocumentsByUserAndState(@PathVariable("idUser") String idUser, @PathVariable("state") State state) {
         return documentService.getDocumentsByUserAndState(idUser, state);
     }
 
     @GetMapping("/filterbystate/{state}")
-    public List<Document> getDocumentsByState(@PathVariable("state") State state) {
+    public List<Invoice> getDocumentsByState(@PathVariable("state") State state) {
         return documentService.getDocumentsByState(state);
     }
 
     @GetMapping("/amount")
-    public int getLimitAmount(@RequestBody Document document) {
+    public int getLimitAmount(@RequestBody Invoice invoice) {
         return alertService.getLimitAmount();
     }
 
     //@PostMapping(value = "/userpay", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
     @PostMapping(value = "/userpay", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Document> payDocument(@RequestBody Document document) {
-        return new ResponseEntity<>(documentService.updatePaymentState(document), HttpStatus.CREATED);
+    public ResponseEntity<Invoice> payDocument(@RequestBody Invoice invoice) {
+        return new ResponseEntity<>(documentService.updatePaymentState(invoice), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}/adminapprove", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Document> adminPaymentApproval(@PathVariable("id") String  documentId) {
+    public ResponseEntity<Invoice> adminPaymentApproval(@PathVariable("id") String  documentId) {
         return new ResponseEntity<>(documentService.adminApprovePayment(documentId), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}/pay")
     public ResponseEntity<String> updateDocumentStateToPaid(@PathVariable("id") String  documentId) {
-        Document document = documentService.getDocumentById(documentId);
-        if (document == null) {
+        Invoice invoice = documentService.getDocumentById(documentId);
+        if (invoice == null) {
             return ResponseEntity.notFound().build();
         }
 
-        document.setState(State.PAGADO);
-        documentService.saveDocument(document);
+        invoice.setState(State.PAGADO);
+        documentService.saveDocument(invoice);
 
-        return ResponseEntity.ok("Document with ID " + documentId + " has been updated to PAGADO.");
+        return ResponseEntity.ok("Invoice with ID " + documentId + " has been updated to PAGADO.");
     }
 
     @PutMapping(value = "/{id}/cancel")
     public ResponseEntity<String> updateDocumentStateToCancel(@PathVariable("id") String documentId, @RequestBody Map<String, String> requestBody) {
         System.out.println(requestBody.get("comment"));
 
-        Document document = documentService.getDocumentById(documentId);
+        Invoice invoice = documentService.getDocumentById(documentId);
         String message = "";
         String comment = requestBody.get("comment");
-        document.setComment(comment);
-        if (document == null) {
+        invoice.setComment(comment);
+        if (invoice == null) {
             return ResponseEntity.notFound().build();
         }
 
-        if(!document.getApproved()){
-            document.setState(State.ANULADO);
-            documentService.saveDocument(document);
-            message = "Document with ID " + documentId + " has been updated to ANULADO.";
+        if(!invoice.getApproved()){
+            invoice.setState(State.ANULADO);
+            documentService.saveDocument(invoice);
+            message = "Invoice with ID " + documentId + " has been updated to ANULADO.";
         }else{
-            message = "Document cannot be canceled, has been already approved by the admin";
+            message = "Invoice cannot be canceled, has been already approved by the admin";
         }
 
 

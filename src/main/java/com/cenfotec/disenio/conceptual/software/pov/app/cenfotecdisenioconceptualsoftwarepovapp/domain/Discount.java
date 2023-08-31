@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Discount {
 
-
+    @Id
     private String  id;
     private String description;
     private double percentage;

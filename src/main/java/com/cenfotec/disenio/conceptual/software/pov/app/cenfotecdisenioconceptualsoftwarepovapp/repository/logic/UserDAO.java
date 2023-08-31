@@ -20,11 +20,11 @@ public class UserDAO {
     public User login(String username, String password){return userCrudRepository.findByUsernameAndPassword(username, password);}
 
     public List<User> getAll(){return (List<User>) userCrudRepository.findAll();}
-    public User getUserByDocument(int idUser){return userCrudRepository.getUserById(idUser);}
+    public User getUserByDocument(String idUser){return userCrudRepository.getUserById(idUser);}
     public User saveUser(User user){return userCrudRepository.save(user);}
-    public void deleteUser(int idUser){userCrudRepository.deleteById(idUser);}
+    public void deleteUser(String idUser){userCrudRepository.deleteById(idUser);}
 
-    public Optional<User> getUser(int idUser) {
+    public Optional<User> getUser(String idUser) {
         return userCrudRepository.findById(idUser);
     }
 }

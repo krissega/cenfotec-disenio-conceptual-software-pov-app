@@ -24,7 +24,7 @@ public class UserController {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
     @GetMapping("/show/{idUser}")
-    public ResponseEntity<AbstractUser> showUserById(@PathVariable("idUser") int idUser){
+    public ResponseEntity<AbstractUser> showUserById(@PathVariable("idUser") String idUser){
 //        return userService.getUser(idUser).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
           return new ResponseEntity<AbstractUser>(userService.getUser(idUser), HttpStatus.OK);
     }

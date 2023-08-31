@@ -23,7 +23,7 @@ public class DiscountController {
     }
 
     @GetMapping("/show/{id}")
-    public Discount getDiscount(@PathVariable("id") int discountId){
+    public Discount getDiscount(@PathVariable("id") String discountId){
         return discountService.getDiscount(discountId).get();
     }
 }

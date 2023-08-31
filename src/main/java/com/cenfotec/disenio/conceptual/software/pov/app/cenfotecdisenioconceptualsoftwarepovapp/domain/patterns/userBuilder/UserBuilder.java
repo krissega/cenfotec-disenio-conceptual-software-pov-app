@@ -17,7 +17,7 @@ public class UserBuilder {
     private String razonSocial;
     private String email;
     private int authenticated;
-    private List<Document> documents;
+    private List<Invoice> invoices;
 
     public UserBuilder setId(String  id) {
         this.id = id;
@@ -79,8 +79,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setDocuments(List<Document> documents) {
-        this.documents = documents;
+    public UserBuilder setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
         return this;
     }
 

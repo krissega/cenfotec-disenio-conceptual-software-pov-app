@@ -23,7 +23,7 @@ public class TaxController {
     }
 
     @GetMapping("/show/{id}")
-    public Tax getTax(@PathVariable("id") int taxId){
+    public Tax getTax(@PathVariable("id") String  taxId){
         return taxService.getTax(taxId).get();
     }
 }

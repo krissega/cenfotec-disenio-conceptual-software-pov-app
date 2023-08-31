@@ -16,7 +16,7 @@ public class DiscountDAO {
         return discountCrudRepository.findAll();
     }
 
-    public Optional<Discount> getDiscountById(int discountId) {
+    public Optional<Discount> getDiscountById(String  discountId) {
         return discountCrudRepository.findById(discountId);
     }
 

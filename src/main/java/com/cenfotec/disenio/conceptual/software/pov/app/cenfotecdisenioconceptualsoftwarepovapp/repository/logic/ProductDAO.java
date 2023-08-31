@@ -20,7 +20,7 @@ public class ProductDAO {
     }
 
     public Product getProduct(String idProduct){
-        return productCrudRepository.findById(idProduct);
+        return productCrudRepository.findById(idProduct).get();
     }
 
     public Product saveProduct(Product product){
@@ -31,10 +31,8 @@ public class ProductDAO {
         productCrudRepository.deleteById(idProduct);
     }
 
-    public Optional<Product> findById(int idProduct) {
-        return productCrudRepository.findById(idProduct);
+
     }
 
 
 
-}

@@ -1,9 +1,6 @@
 package com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.service;
 
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Document;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.Product;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.State;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.User;
+import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.*;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.TaxStrategy.*;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.facturaDecorator.Factura;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.facturaDecorator.FacturaBase;
@@ -11,7 +8,6 @@ import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptua
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.domain.patterns.facturaDecorator.FacturaImpuestosDecorator;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.DocumentDAO;
 import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.repository.logic.UserDAO;
-import com.cenfotec.disenio.conceptual.software.pov.app.cenfotecdisenioconceptualsoftwarepovapp.util.ProductUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,10 +30,10 @@ public class DocumentService {
 
 
 
-    public List<Document> getAll(){
+    public List<Invoice> getAll(){
         return documentRepository.getAll();
     }
-    public Document getDocument(String idDocument){
+    public Invoice getDocument(String idDocument){
         return documentRepository.getDocument(idDocument);
     }
 
@@ -59,31 +55,31 @@ public class DocumentService {
         }
         return strategy;
     }
-    public Document save(Document document){
+    public Invoice save(Invoice invoice){
         double total = 0;
         int quantity=0;
-        for (Product product : document.getProducts()) {
-            Product productInStock = productService.getProduct(product.getId());
-            quantity = ProductUtils.getProductQty(document.getProducts(), product);
+        for (Item item : invoice.getProducts()) {
+            Product productInStock = productService.getProduct(item.getProduct().getId());
+            quantity = item.getQtyToSale();
             total += productInStock.getPrice() * quantity;
         }
 
         //////Strategy for taxes
-        TaxStrategy strategy = this.getTaxStrategy(document.getTax().getDescription()); //Define la estrategia
+        TaxStrategy strategy = this.getTaxStrategy(invoice.getTax().getDescription()); //Define la estrategia
         BillingService billingService = new BillingService(strategy);
         //Calcula los porcentajes correctos basado en la estrategia del tipo de impuestos
-        double fixedPercentage = billingService.getFixedPercentage(document.getTax().getPercentage());
+        double fixedPercentage = billingService.getFixedPercentage(invoice.getTax().getPercentage());
         //////
 
         //Calular factura con impuestos usando decorator
         Factura facturaBase = new FacturaBase(total);
-        Factura facturaConDescuentos = new FacturaDescuentosDecorator(facturaBase, (document.getDiscount().getPercentage())/100);
+        Factura facturaConDescuentos = new FacturaDescuentosDecorator(facturaBase, (invoice.getDiscount().getPercentage())/100);
         Factura facturaConImpuestos = new FacturaImpuestosDecorator(facturaConDescuentos, (fixedPercentage));
-        document.setTotal(facturaConImpuestos.calcularTotal());
-        Document savedDocument = documentRepository.saveDocument(document);
+        invoice.setTotal(facturaConImpuestos.calcularTotal());
+        Invoice savedInvoice = documentRepository.saveDocument(invoice);
         //create alert
-        alertService.alertNeeded(savedDocument);
-        return savedDocument;
+        alertService.alertNeeded(savedInvoice);
+        return savedInvoice;
     }
 
 
@@ -92,12 +88,12 @@ public class DocumentService {
     public void updateDocumentsState() {
         System.out.println("Tarea programada ejecutada.");
         LocalDateTime now = LocalDateTime.now();
-        List<Document> documents = documentRepository.getDocumentsByStateAndValidBefore(State.PENDIENTE_DE_PAGO, now);
+        List<Invoice> invoices = documentRepository.getDocumentsByStateAndValidBefore(State.PENDIENTE_DE_PAGO, now);
 
-        for (Document document : documents) {
-            document.setState(State.ANULADO);
-            documentRepository.saveDocument(document);
-            System.out.println("Se actualizó el estado de la factura: " + document.getId());
+        for (Invoice invoice : invoices) {
+            invoice.setState(State.ANULADO);
+            documentRepository.saveDocument(invoice);
+            System.out.println("Se actualizó el estado de la factura: " + invoice.getId());
         }
     }
     public boolean deleteDocument(String idDocument){
@@ -110,18 +106,18 @@ public class DocumentService {
         }
     }
 
-    public List<Document> getAllInvoices() {
+    public List<Invoice> getAllInvoices() {
         return documentRepository.getAllInvoices();
     }
 
-    public List<Document> getAllTickets() {
+    public List<Invoice> getAllTickets() {
         return documentRepository.getAllInvoices();//user 1 = tickets
     }
-    public List<Document> getAllByUser(String idUser){
+    public List<Invoice> getAllByUser(String idUser){
         return documentRepository.getDocumentsByIdUser(idUser);
     }
 
-    public List<Document> getDocumentsByUserAndState(int userId, State state){
+    public List<Invoice> getDocumentsByUserAndState(String userId, State state){
         User user = userDAO.getUser(userId).get();
 
         return documentRepository.getDocumentsByIdUserAndState(user, state);
@@ -129,32 +125,32 @@ public class DocumentService {
 
 
 
-    public Document adminApprovePayment(String documentId) {
-        Document document = documentRepository.getDocument(documentId);
-        document.setApproved(true);
-        documentRepository.updateApprovePaymentAdmin(document);
-        System.out.println("Factura: " + document.getId() +" ha sido aprobada por el administrador");
-        return document;
+    public Invoice adminApprovePayment(String documentId) {
+        Invoice invoice = documentRepository.getDocument(documentId);
+        invoice.setApproved(true);
+        documentRepository.updateApprovePaymentAdmin(invoice);
+        System.out.println("Factura: " + invoice.getId() +" ha sido aprobada por el administrador");
+        return invoice;
     }
 
-    public Document updatePaymentState(Document document){
-        document.setState(State.PAGADO);
-        Document updatedDocument = documentRepository.updatePaymentState(document);
+    public Invoice updatePaymentState(Invoice invoice){
+        invoice.setState(State.PAGADO);
+        Invoice updatedInvoice = documentRepository.updatePaymentState(invoice);
         //create alert
-        alertService.alertNeeded(updatedDocument);
-        return updatedDocument;
+        alertService.alertNeeded(updatedInvoice);
+        return updatedInvoice;
     }
 
-    public Document getDocumentById(String id) {
+    public Invoice getDocumentById(String id) {
         return documentRepository.findById(id);
     }
 
-    public void saveDocument(Document document) {
-        documentRepository.save(document);
+    public void saveDocument(Invoice invoice) {
+        documentRepository.save(invoice);
     }
 
 
-    public List<Document> getDocumentsByState(State state) {
+    public List<Invoice> getDocumentsByState(State state) {
         return documentRepository.getDocumentsByState(state);
     }
 }
